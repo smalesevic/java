@@ -81,8 +81,79 @@ public class Calculations
     - Make sure format is good, column headers required
     - Results of the calculations should be output to the console
     */
-    public void stats()
+    public void stats(int numRows, int numColumns, Date dateArray [], float dataArray[][])
     {
+        int open = 0;
+        int close = 3;
+        float highOpen = dataArray[0][open];
+        float lowOpen = dataArray[0][open];
+        float highClose;
+        float lowClose;
+        Date [] high = new Date[10];
+        float temp;
+        Date [] low = new Date[10];
+        float sorted [] []= new float[numRows][2]; 
+        float [] diff = new float[numRows];
 
+        for(int i=0; i<numRows; i++)
+        {
+            sorted[i][0] = dataArray[i][close];
+            sorted[i][1] = (float)i;
+            diff[i] = dataArray[i][open] - dataArray[i][close];
+            if(highOpen < dataArray[i][open])
+            {
+                highOpen = dataArray[i][open];
+            }
+            if(lowOpen > dataArray[i][open])
+            {
+                lowOpen = dataArray[i][open];
+            }
+        }
+
+        for(int i=0; i<numRows; i++)
+        {
+            for(int j=0; j<numRows-1; j++)
+            {
+                // highest to lowest
+                if(sorted[j][0] < sorted[j+1][0])
+                {
+                    temp = sorted[j][0];
+                    sorted[j][0] =  sorted[j+1][0];
+                    sorted[j+1][0] = temp;
+
+                    temp = sorted[j][1];
+                    sorted[j][1] = sorted[j+1][1];
+                    sorted[j+1][1] = temp;
+                }
+            }
+        }
+
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
+        for(int i=0; i<10; i++)
+        {
+            high[i] = dateArray[(int)sorted[i][1]];
+            low[i] = dateArray[(int)sorted[numRows-i-1][1]];
+            System.out.println(df.format(high[i]) + "   " + df.format(low[i]));
+        }
+
+        highClose = sorted[0][0];
+        lowClose = sorted[numRows-1][0];
+        
+         
+        ImportantVals vals = (float highO, float highCl, float lowO, float lowCl) -> {
+            System.out.println("My first Lambda expression: ");
+            System.out.println("The highest opening value was: " + highO);
+            System.out.println("The lowest opening value was: " + lowO);
+            System.out.println("The highest closing value was: " + highCl);                
+            System.out.println("The lowest closing value was: " + lowCl);
+        };
+
+        vals.printVals(highOpen, highClose, lowOpen, lowClose);
+        for(int i=0; i<numRows; i++)
+        {
+            System.out.println(sorted[i][0] + "\t" + sorted[i][1]);
+        }
     }
 }

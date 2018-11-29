@@ -74,6 +74,7 @@ public class DataAnalyzer
             //calc.printArray(numRows, calc.createDateArray(numRows, array), calc.createDataArray(numRows, numColumns, array), numColumns);
             ReadFiles.printArray(ReadFiles.getArray(array), numRows, numColumns);
             calc.printArray(numRows, calc.createDateArray(numRows, array), calc.createDataArray(numRows, numColumns, array), numColumns);
+            calc.stats(numRows, numColumns, calc.createDateArray(numRows, array), calc.createDataArray(numRows, numColumns, array));
             reader.close();
         }
         catch(Exception e)

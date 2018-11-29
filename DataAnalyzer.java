@@ -71,8 +71,9 @@ public class DataAnalyzer
             ReadFiles.CSVToArray(reader, array, numRows, numColumns);
 
             //calc.createDateArray(numRows, array);
-            calc.printArray(numRows, calc.createDateArray(numRows, array));
+            //calc.printArray(numRows, calc.createDateArray(numRows, array), calc.createDataArray(numRows, numColumns, array), numColumns);
             ReadFiles.printArray(ReadFiles.getArray(array), numRows, numColumns);
+            calc.printArray(numRows, calc.createDateArray(numRows, array), calc.createDataArray(numRows, numColumns, array), numColumns);
             reader.close();
         }
         catch(Exception e)

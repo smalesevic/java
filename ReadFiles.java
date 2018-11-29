@@ -106,7 +106,7 @@ public class ReadFiles
             for(int j=0; j<numColumns; j++)
             {
                 //System.out.print(array[i][j] + '\t' + '\t');
-                System.out.print(String.format("%12s", array[i][j]));
+                System.out.print(String.format("%-12s", array[i][j]));
             }
             System.out.println();
         }

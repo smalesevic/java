@@ -2,20 +2,26 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 import java.util.Arrays;
-
+/**
+Class Calculations == Creates date array, data array and performs calculations on data array
+@author Sasha Malesevic
+@since 2018-11-28
+*/
 public class Calculations 
 {
     /**
     Creates an array to hold all of the dates, the first column of the multi-dimensional array
     Uses a try and catch block
     ie. Date [] dateArray = new Date[r.findRowNumber] 
+    @param numRows used to initialize size of dateArray
+    @param array to copy information about the Date into dateArray
     */
     public Date [] createDateArray(int numRows, String array [][])
     {
         Date [] dateArray = new Date[numRows];
         try
         {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             for(int i=0; i<numRows; i++)
             {
                 String dateInString = array[i][0];
@@ -32,7 +38,9 @@ public class Calculations
 
     /**
     Create a second array to hold data from the six other columns
-    ie. float [] [] dataArray = new float[r.findRowNumber][7]
+    @param numRows used to initialize size of dataArray
+    @param numColumns used to initialize size of dataArray
+    @param array to copy information into dataArray
     */
     public float [][] createDataArray(int numRows, int numColumns, String array [][])
     {
@@ -48,10 +56,15 @@ public class Calculations
     }
 
     /**
-    Prints the above arrays 
+    Prints the above arrays
+    @param numRows used to stop for loop
+    @param dateArray required to print
+    @param dataArray required to print
+    @param numColumns used to stop for loop 
     */
     public void printArray(int numRows, Date dateArray[], float dataArray[][], int numColumns)
     {
+        String [] strArray = {"Open", "High", "Low", "Close", "Adj close", "Volume"};
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         System.out.println("Date Array: ");
         for(int i=0; i<numRows; i++)
@@ -59,11 +72,17 @@ public class Calculations
             System.out.println(df.format(dateArray[i]));
         }
         System.out.println("Data Array: ");
+
+        for(int i=0; i<numColumns-1; i++)
+        {
+            System.out.printf("%-12s", strArray[i]);
+        }
+        System.out.println();
         for(int i=0; i<numRows; i++)
         {
             for(int j=0; j<numColumns-1; j++)
             {
-                System.out.printf("%-10.3f", dataArray[i][j]);
+                System.out.printf("%-12.3f", dataArray[i][j]);
                 //System.out.print(dataArray[i][j] + "\t");
 
             }
@@ -80,11 +99,18 @@ public class Calculations
     - This needs to be written to a file stored in c:\temp\directory
     - Make sure format is good, column headers required
     - Results of the calculations should be output to the console
+    @param numRows used to stop for loop
+    @param numColumns used to stop for loop
+    @param dateArray used for Top 10 dates arrays
+    @param dataArray used for calculations and important values
+    @param diff array holding the column difference for all rows
+
+    NOTE: This is where the Lambda expression is used 
     */
-    public void stats(int numRows, int numColumns, Date dateArray [], float dataArray[][])
+    public void stats(int numRows, int numColumns, Date dateArray [], float dataArray[][], float diff[])
     {
-        int open = 0;
-        int close = 3;
+        int open = 0; // column index
+        int close = 3; // column index
         float highOpen = dataArray[0][open];
         float lowOpen = dataArray[0][open];
         float highClose;
@@ -93,8 +119,11 @@ public class Calculations
         float temp;
         Date [] low = new Date[10];
         float sorted [] []= new float[numRows][2]; 
-        float [] diff = new float[numRows];
 
+        /**
+        First I sorted the closing values, I made it a two dimensional array to keep track of the original location
+        of each closing date, this is later used as an index when determining 10 highest/lowest closing dates.
+        */
         for(int i=0; i<numRows; i++)
         {
             sorted[i][0] = dataArray[i][close];
@@ -128,19 +157,28 @@ public class Calculations
             }
         }
 
-
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
+        System.out.println("Top 10 dates with highest closing value (Descending): ");
         for(int i=0; i<10; i++)
         {
             high[i] = dateArray[(int)sorted[i][1]];
+            System.out.println(df.format(high[i]));
+        }
+        System.out.println("Top 10 dates with lowest closing value (Ascending): ");
+        for(int i=0; i<10; i++)
+        {
             low[i] = dateArray[(int)sorted[numRows-i-1][1]];
-            System.out.println(df.format(high[i]) + "   " + df.format(low[i]));
+            System.out.println(df.format(low[i]));
         }
 
+        System.out.println("The column difference for every date is: ");
+        for(int i=0; i<numRows; i++)
+        {
+            System.out.println(diff[i]);
+        }
         highClose = sorted[0][0];
         lowClose = sorted[numRows-1][0];
-        
          
         ImportantVals vals = (float highO, float highCl, float lowO, float lowCl) -> {
             System.out.println("My first Lambda expression: ");
@@ -149,11 +187,6 @@ public class Calculations
             System.out.println("The highest closing value was: " + highCl);                
             System.out.println("The lowest closing value was: " + lowCl);
         };
-
         vals.printVals(highOpen, highClose, lowOpen, lowClose);
-        for(int i=0; i<numRows; i++)
-        {
-            System.out.println(sorted[i][0] + "\t" + sorted[i][1]);
-        }
     }
 }

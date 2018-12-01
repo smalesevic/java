@@ -16,7 +16,7 @@ public class ReadFiles
     @param path a Path object is passed to create a new File object so that exists() and isDirectory() can be used
     */
 
-    public static boolean fileExists(Path path)
+    public boolean fileExists(Path path)
     {
         File file = new File(path.toString());
         if(file.exists() && !file.isDirectory())
@@ -33,7 +33,7 @@ public class ReadFiles
                 prior to calling findNumRows; a line has already been read and is ready to use
     */
 
-    public static int findNumRows(BufferedReader reader, String line)
+    public int findNumRows(BufferedReader reader, String line)
     {
         try
         {
@@ -65,7 +65,7 @@ public class ReadFiles
     */
 
     
-    public static void CSVToArray(BufferedReader reader, String array[][], int numRows, int numColumns)
+    public void CSVToArray(BufferedReader reader, String array[][], int numRows, int numColumns)
     {   
         try
         {
@@ -99,7 +99,7 @@ public class ReadFiles
     @param numColumns Used to determine when to stop for loop 
     */
  
-    public static void printArray(String array[][], int numRows, int numColumns)
+    public void printArray(String array[][], int numRows, int numColumns)
     {
         for(int i=0; i<numRows; i++)
         {
@@ -117,7 +117,7 @@ public class ReadFiles
     @param array[][] Multidimensional array is passed to print the contents of the array
     */
 
-    public static String[][] getArray(String array[][])
+    public String[][] getArray(String array[][])
     {
         return array;
     }
